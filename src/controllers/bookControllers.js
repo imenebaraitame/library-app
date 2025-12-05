@@ -136,4 +136,4 @@ const deleteBook = async (req, res) => {
   }
 };
 
-export {getBooks, getBookById,getBooksByCategory, addBook, updateBook, deleteBook };
+export {getBooks, getBookById, getBooksByTitle, getBooksByCategory, addBook, updateBook, deleteBook };

@@ -5,6 +5,7 @@ import {
   getBooks,
   getBookById,
   getBooksByCategory, 
+  getBooksByTitle,
   addBook,
   updateBook,
   deleteBook
@@ -17,6 +18,7 @@ router.get("/", getBooks); // localhost:5000/api/books
 router.get('/:bookId',getBookById);
 
 router.get("/category/:category", getBooksByCategory);// localhost:5000/api/books/category
+router.get("/title/:title", getBooksByTitle);// localhost:5000/api/books/title
 
 router.post('/', addBook);
 
