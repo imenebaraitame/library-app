@@ -45,6 +45,18 @@ const getBooksByCategory = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+//get book by title
+const getBooksByTitle = async (req, res) => {
+  try {
+    const title = req.params.title;
+    const filteredBooks = await Book.find({
+      title: { $regex: title, $options: "i" } // case-insensitive
+    });
+    res.json(filteredBooks);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }   
+}
 
 // add a new book
 const addBook = async(req, res) => {
