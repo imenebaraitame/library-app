@@ -6,6 +6,7 @@ A simple RESTful API for managing books using Node.js, Express, and MongoDB.
 
 - Get all books
 - Get a book by ID
+- Get a book by Title
 - Add a new book
 - Update a book
 - Delete a book
