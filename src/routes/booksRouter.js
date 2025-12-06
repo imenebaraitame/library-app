@@ -4,8 +4,8 @@ import express from 'express';
 import {
   getBooks,
   getBookById,
-  getBooksByCategory, 
-  getBooksByTitle,
+  getBooksByCategory,     
+  searchBooksByTitleOrAuthor,
   addBook,
   updateBook,
   deleteBook
@@ -14,11 +14,11 @@ import {
 const router = express.Router();
 
 router.get("/", getBooks); // localhost:5000/api/books
-
+router.get("/search", searchBooksByTitleOrAuthor);// localhost:5000/api/books/search?title=...&author=...
 router.get('/:bookId',getBookById);
 
 router.get("/category/:category", getBooksByCategory);// localhost:5000/api/books/category
-router.get("/title/:title", getBooksByTitle);// localhost:5000/api/books/title
+
 
 router.post('/', addBook);
 
