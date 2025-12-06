@@ -14,15 +14,17 @@ const getBooks = async(req, res,next) => {
 // get book by id
 const getBookById = async(req, res, next) => {
   try {
-    const book = await Book.findById(req.params.id);
+    const book = await Book.findById(req.params.bookId);
+  
     if (!book) {
       const error = new Error("Book not found");
       error.status = 404;
       error.message = "Book not found";
-      throw err; 
+      throw error; 
     }
     res.json(book);
   } catch (error) {
+    console.log('Error in getBookById:', error);
     next(error); 
   }
 };
