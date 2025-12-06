@@ -1,19 +1,13 @@
 import Book from "../models/Book.js";
 
-import express from "express";
-import errorMiddleware from "../middlewares/errorMiddleware.js";
-const app = express();
-
-// use error middleware
-app.use(errorMiddleware);
 
 //get all books
-const getBooks = async(req, res) => {
+const getBooks = async(req, res,next) => {
   try {
     const Books = await Book.find();
     res.json(Books);
   } catch (error) {
-    res.status(500).json({ message: "Server Error" , error: error.message} );
+    next((error)); // pass error to error middleware
   }
 };
 
@@ -22,16 +16,19 @@ const getBookById = async(req, res, next) => {
   try {
     const book = await Book.findById(req.params.id);
     if (!book) {
-      return res.status(404).json({ message: "Book not found" });
+      const error = new Error("Book not found");
+      error.status = 404;
+      error.message = "Book not found";
+      throw err; 
     }
     res.json(book);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    next(error); 
   }
 };
 
 //get book by category
-const getBooksByCategory = async (req, res) => {
+const getBooksByCategory = async (req, res, next) => {
   try {
     const category = req.params.category;
 
@@ -42,32 +39,38 @@ const getBooksByCategory = async (req, res) => {
     res.json(filteredBooks);
 
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    next(error);
   }
 };
-//get book by title
-const getBooksByTitle = async (req, res) => {
+//get book by (title Or author) , title and author.
+const searchBooksByTitleOrAuthor = async (req, res,next) => {
   try {
-    const title = req.params.title;
-    const filteredBooks = await Book.find({
-      title: { $regex: title, $options: "i" } // case-insensitive
+    const {title, author} = req.query;
+    
+    const filteredBooks = await Book.find({ 
+        title: new RegExp(title, 'i'),
+        author: new RegExp(author, 'i')
     });
     res.json(filteredBooks);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    next(error);
   }   
 }
 
 // add a new book
-const addBook = async(req, res) => {
+const addBook = async(req, res , next) => {
   try {
     const { title, author, price, category, quantity} = req.body;
     if (!title || price === undefined || !author || !category || quantity === undefined) {
-      return res.status(400).json({ message: "All fields are required" });
+      const error = new Error("All fields are required");
+      error.status = 400;
+      throw error;
     }
 
     if (isNaN(price)) {
-      return res.status(400).json({ message: "Book price must be a number" });
+      const error = new Error("Book price must be a number");
+      error.status = 400;
+      throw error;  
     }
     const newBook = new Book({
       title,
@@ -79,22 +82,18 @@ const addBook = async(req, res) => {
     // check for name uniqueness
     const existingBook = await Book.findOne({ title: title });
     if (existingBook) {
-      return res.status(400).json({ message: "Book title must be unique" });
+      const error = new Error("Book title must be unique");
+      error.status = 400;
+      throw error;      
     }
-
     const savedBook = await newBook.save();
     res.status(201).json(savedBook);
   } catch (error) {
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({ message: "Validation Error", error: error.message });
-    }
-    res.status(500).json({ message: "Server Error", error: error.message });
-    console.log(error.message);
+    next(error);
   }
-
 };
 
-const updateBook = async (req, res) => {
+const updateBook = async (req, res,next) => {
   try {
     const bookId = req.params.bookId;
     const { title, author, price, category, quantity } = req.body;
@@ -104,36 +103,38 @@ const updateBook = async (req, res) => {
       { title, author, price, category, quantity },
       { new: true, runValidators: true }
     );
-
+    
     if (!updatedBook) {
-      return res.status(404).json({ message: "Book not found" });
+      const error = new Error("Book not found");
+      error.status = 404;
+      error.message = "Book not found";
+      throw error;
     }
-
     res.json(updatedBook);
 
   } catch (error) {
-    if (error.name === "ValidationError") {
-      return res.status(400).json({ message: "Validation Error", error: error.message });
-    }
-    res.status(500).json({ message: "Server Error", error: error.message });
+    next(error);
   }
 };
 
-const deleteBook = async (req, res) => {
+const deleteBook = async (req, res, next) => {
   try {
     const bookId = req.params.bookId;
 
     const deletedBook = await Book.findByIdAndDelete(bookId);
 
     if (!deletedBook) {
-      return res.status(404).json({ message: "Book not found" });
+      const error = new Error("Book not found");
+      error.status = 404;
+      error.message = "Book not found";
+      throw error;
     }
 
     res.json({ message: "Book deleted successfully" });
 
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    next(error);
   }
 };
 
-export {getBooks, getBookById, getBooksByTitle, getBooksByCategory, addBook, updateBook, deleteBook };
+export {getBooks, getBookById, searchBooksByTitleOrAuthor , getBooksByCategory, addBook, updateBook, deleteBook };
