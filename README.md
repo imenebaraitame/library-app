@@ -90,4 +90,8 @@ Send JSON in the body for POST and PUT requests.
   "quantity": 15
 }
 ```
+## License
+
+This project is [MIT](https://github.com/imenebaraitame/library-app/blob/main/LICENSE) licensed.
+
 

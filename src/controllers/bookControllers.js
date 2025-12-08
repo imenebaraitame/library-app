@@ -15,7 +15,6 @@ const getBooks = async(req, res,next) => {
 const getBookById = async(req, res, next) => {
   try {
     const book = await Book.findById(req.params.bookId);
-  
     if (!book) {
       const error = new Error("Book not found");
       error.status = 404;
@@ -86,6 +85,7 @@ const addBook = async(req, res , next) => {
     if (existingBook) {
       const error = new Error("Book title must be unique");
       error.status = 400;
+      error.message = "Book title must be unique";
       throw error;      
     }
     const savedBook = await newBook.save();
