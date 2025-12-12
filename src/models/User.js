@@ -16,6 +16,15 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Password is required'],   
         trim: true,
     },
+    role: {
+        type: String,
+        enum: ['member', 'admin'],
+        default: 'member'
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }   
 });
 
 const User = mongoose.model("User", userSchema);

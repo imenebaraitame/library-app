@@ -1,13 +1,17 @@
-import { get } from 'mongoose';
 import User from '../models/User.js';
-// import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-export const getUsers = async(req, res,next) => {
+//node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+
+export const getUsers = async(res,next) => {
     try {
-        const users = await User.find();
+        const users = await User.find().select('-password');
+        console.log(users);
         res.json(users);
+        
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };  
@@ -22,7 +26,7 @@ export const addUser = async(req, res,next) => {
     }
 };
 
-/*
+
 export const signupUser = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
      .then(hash => {
@@ -50,6 +54,7 @@ export const signupUser = (req, res, next) => {
      });
 };
 
+
 export const loginUser = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then(user => {
@@ -65,7 +70,7 @@ export const loginUser = (req, res, next) => {
                                 userId: user._id,
                                 token: jwt.sign(
                                     { userId: user._id },
-                                    'RANDOM_TOKEN_SECRET',
+                                    process.env.jwtSecret,
                                     { expiresIn: '24h' }
                                 )
                             });
@@ -80,10 +85,10 @@ export const loginUser = (req, res, next) => {
             res.status(500).json({error: err});
         })
 };
-*/
+
 export default {
-   // signupUser,
-   // loginUser,
+   signupUser,
+   loginUser,
    getUsers,
-   addUser
+   addUser,
 };
