@@ -29,6 +29,7 @@ export const createCart = async (req, res, next) => {
 };
 
 // Add item to existing cart
+//TODO: when adding book to cart, update quantity if the book already exists in the cart
 export const addItemToCart = async (req, res, next) => {
     try {
         const { cartId } = req.params;
