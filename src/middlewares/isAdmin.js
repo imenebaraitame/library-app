@@ -4,8 +4,7 @@ import User from '../models/User.js';
 async function isAdmin(req, res, next) {
     try {
 
-        const requester = await User.findById(req.userId);
-        console.log("Requester Role:", requester.role);
+        const requester = await User.findById(req.user.userId).select('role');
         if(!requester) {
             return res.status(404).json({ message: 'User not found.' });
         }
@@ -15,7 +14,6 @@ async function isAdmin(req, res, next) {
         }
         next();
     } catch (error) {
-        console.log(error);
         next(error);
     }   
 }

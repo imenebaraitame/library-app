@@ -4,14 +4,11 @@ import jwt from 'jsonwebtoken';
 
 //node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 
-export const getUsers = async(res,next) => {
+export const getUsers = async(req,res,next) => {
     try {
         const users = await User.find().select('-password');
-        console.log(users);
         res.json(users);
-        
     } catch (error) {
-        console.log(error);
         next(error);
     }
 };  

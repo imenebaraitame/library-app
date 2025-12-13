@@ -10,6 +10,7 @@ import {
   updateBook,
   deleteBook
 } from "../controllers/bookControllers.js";
+import isAdmin from '../middlewares/isAdmin.js';  
 
 const router = express.Router();
 
@@ -18,8 +19,8 @@ router.get("/search", searchBooksByTitleOrAuthor);// localhost:5000/api/books/se
 router.get("/category/:category", getBooksByCategory);// localhost:5000/api/books/category
 router.post('/', addBook);
 
-router.put("/:bookId", updateBook);
-router.delete("/:bookId", deleteBook);
+router.put("/:bookId",updateBook);
+router.delete("/:bookId",deleteBook);
 router.get('/:bookId',getBookById);
 
 
