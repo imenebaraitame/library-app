@@ -45,9 +45,7 @@ const addCategory = async (req, res, next) => {
     }
 
     const newCategory = new Category({ name });
-    console.log(newCategory);
     const savedCategory = await newCategory.save();
-    console.log(savedCategory);
 
     res.status(201).json(savedCategory);
   } catch (error) {
