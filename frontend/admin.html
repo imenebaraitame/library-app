@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - BookStore</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <h1><i class="fas fa-book-open"></i> Book Store Admin</h1>
+                </div>
+                <nav class="nav-menu">
+                    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                    <a href="cart.html" class="nav-link">
+                        <span><i class="fas fa-shopping-cart"></i> Cart</span>
+                    </a>
+                    <button class="btn btn-secondary" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Container -->
+    <section class="admin-container">
+        <div class="container">
+            <!-- Admin Header -->
+            <div class="admin-header">
+                <h2>Admin Dashboard</h2>
+                <p>Manage books, categories, and users</p>
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="switchAdminTab('books')">
+                        <i class="fas fa-book"></i> Manage Books
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('categories')">
+                        <i class="fas fa-tag"></i> Manage Categories
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('users')">
+                        <i class="fas fa-users"></i> View Users
+                    </button>
+                </div>
+            </div>
+
+            <!-- Books Management Section -->
+            <div id="booksSection" class="admin-content admin-section active">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h3>Books Management</h3>
+                    <button class="btn btn-success" onclick="showAddBookModal()">
+                        <i class="fas fa-plus"></i> Add New Book
+                    </button>
+                </div>
+                
+                <div id="booksTableContainer">
+                    <div class="loading">Loading books...</div>
+                </div>
+            </div>
+
+            <!-- Categories Management Section -->
+            <div id="categoriesSection" class="admin-content admin-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h3>Categories Management</h3>
+                    <button class="btn btn-success" onclick="showAddCategoryModal()">
+                        <i class="fas fa-plus"></i> Add New Category
+                    </button>
+                </div>
+                
+                <div id="categoriesTableContainer">
+                    <div class="loading">Loading categories...</div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="usersSection" class="admin-content admin-section">
+                <h3>Users List</h3>
+                <div id="usersTableContainer">
+                    <div class="loading">Loading users...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add/Edit Book Modal -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBookModal()">&times;</span>
+            <h2 id="bookModalTitle">Add New Book</h2>
+            <form id="bookForm">
+                <div class="form-group">
+                    <label for="bookTitle">Title *</label>
+                    <input type="text" id="bookTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookAuthor">Author *</label>
+                    <input type="text" id="bookAuthor" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookPrice">Price *</label>
+                    <input type="number" id="bookPrice" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="bookCategory">Category *</label>
+                    <select id="bookCategory" required>
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bookQuantity">Quantity *</label>
+                    <input type="number" id="bookQuantity" min="0" required>
+                </div>
+                <input type="hidden" id="bookId">
+                <button type="submit" class="btn btn-success">Save Book</button>
+                <button type="button" class="btn btn-secondary" onclick="closeBookModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Category Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCategoryModal()">&times;</span>
+            <h2 id="categoryModalTitle">Add New Category</h2>
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label for="categoryName">Category Name *</label>
+                    <input type="text" id="categoryName" required>
+                </div>
+                <input type="hidden" id="categoryId">
+                <button type="submit" class="btn btn-success">Save Category</button>
+                <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Book Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="admin-script.js"></script>
+</body>
+</html>

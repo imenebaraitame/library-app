@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStore - Your Online Book Shop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <h1><i class="fas fa-book-open"></i> Book Store</h1>
+                </div>
+                <nav class="nav-menu">
+                    <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+                    <a href="cart.html" class="nav-link">
+                        <span><i class="fas fa-shopping-cart"></i> Cart</span>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                    <div class="auth-section" id="authSection">
+                        <a href="auth.html" class="btn btn-primary" id="loginBtn"> <i class="fas fa-sign-in-alt"></i> Login</a>
+                        <button class="btn btn-secondary" id="logoutBtn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        <a href="admin.html" class="btn btn-admin" id="adminBtn" style="display: none;">Admin Panel</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Discover Your Next Great Read</h2>
+            <p>Browse thousands of books across all genres</p>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-controls">
+                <div class="search-box">
+                    <input type="text" id="searchTitle" placeholder="Search by title..." class="search-input">
+                    <input type="text" id="searchAuthor" placeholder="Search by author..." class="search-input">
+                    <button onclick="searchBooks()" class="btn btn-primary">Search</button>
+                    <button onclick="clearSearch()" class="btn btn-secondary">Clear</button>
+                </div>
+                <div class="filter-box">
+                    <label for="categoryFilter">Filter by Category:</label>
+                    <select id="categoryFilter" onchange="filterByCategory()" class="category-select">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Books Grid -->
+    <section class="books-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Available Books</h2>
+                <p id="booksCount">Loading books...</p>
+            </div>
+            <div id="booksGrid" class="books-grid">
+                <!-- Books will be loaded here dynamically -->
+                <div class="loading">Loading books...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Book Detail Modal -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="bookDetails"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Book Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
